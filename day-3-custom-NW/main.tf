@@ -39,8 +39,7 @@ resource "aws_route_table_association" "dev" {
 
 }
 # creation of sg
-resource "aws_security_group" "allow_tls" {
-  name   = "allow_tls"
+resource "aws_security_group" "dev" {
   vpc_id = aws_vpc.dev.id
   tags = {
     Name = "dev_sg"
@@ -54,8 +53,8 @@ resource "aws_security_group" "allow_tls" {
   }
   ingress {
     description = "TLS from VPC"
-    from_port   = 80
-    to_port     = 80
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -73,7 +72,7 @@ resource "aws_instance" "Name" {
   instance_type = "t2.micro"
   key_name      = "syed2"
   subnet_id     = aws_subnet.dev.id
-  vpc_security_group_ids = [aws_security_group.dev_sg.id]
+  vpc_security_group_ids = [aws_security_group.dev.id]
      
   tags = {
     Name = "myec2"
