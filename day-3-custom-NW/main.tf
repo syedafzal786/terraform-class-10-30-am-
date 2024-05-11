@@ -10,9 +10,18 @@ resource "aws_vpc" "dev" {
 
 resource "aws_subnet" "dev" {
   vpc_id            = aws_vpc.dev.id
-  cidr_block        = "10.0.0.0/21"
+  cidr_block        = "10.0.0.0/24"
   availability_zone = "ap-south-1a"
+
 }
+# # create pvt subnet
+resource "aws_subnet" "abdul" {
+  vpc_id            = aws_vpc.dev.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "ap-south-1a"
+
+}
+
 # create IG and attach to vpc
 
 resource "aws_internet_gateway" "dev" {
@@ -38,6 +47,35 @@ resource "aws_route_table_association" "dev" {
   route_table_id = aws_route_table.dev.id
 
 }
+# create EIP
+resource "aws_eip" "lb" {
+
+}
+
+# create nat-gw
+resource "aws_nat_gateway" "natgw" {
+  allocation_id = aws_eip.lb.id
+  subnet_id     = aws_subnet.abdul.id
+
+}
+
+# create Pvt RT and attach to nat-gw
+resource "aws_route_table" "pvt-rt" {
+  vpc_id = aws_vpc.dev.id
+
+  route {
+    cidr_block     = "0.0.0.0/24"
+    nat_gateway_id = aws_nat_gateway.natgw.id
+  }
+}
+
+# subnet association to add into PVT RT
+resource "aws_route_table_association" "assoc-pvt" {
+  route_table_id = aws_route_table.pvt-rt.id
+  subnet_id      = aws_subnet.abdul.id
+
+}
+
 # creation of sg
 resource "aws_security_group" "dev" {
   vpc_id = aws_vpc.dev.id
@@ -68,12 +106,12 @@ resource "aws_security_group" "dev" {
 }
 # creation of ec2
 resource "aws_instance" "Name" {
-  ami           = "ami-013e83f579886baeb"
-  instance_type = "t2.micro"
-  key_name      = "syed2"
-  subnet_id     = aws_subnet.dev.id
+  ami                    = "ami-013e83f579886baeb"
+  instance_type          = "t2.micro"
+  key_name               = "syed2"
+  subnet_id              = aws_subnet.dev.id
   vpc_security_group_ids = [aws_security_group.dev.id]
-     
+
   tags = {
     Name = "myec2"
   }
