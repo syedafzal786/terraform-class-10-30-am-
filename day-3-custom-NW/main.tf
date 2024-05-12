@@ -9,9 +9,10 @@ resource "aws_vpc" "dev" {
 # create subnet
 
 resource "aws_subnet" "dev" {
-  vpc_id            = aws_vpc.dev.id
-  cidr_block        = "10.0.0.0/24"
-  availability_zone = "ap-south-1a"
+  vpc_id                  = aws_vpc.dev.id
+  cidr_block              = "10.0.0.0/24"
+  map_public_ip_on_launch = true
+  availability_zone       = "ap-south-1a"
 
 }
 # # create pvt subnet
@@ -49,7 +50,7 @@ resource "aws_route_table_association" "dev" {
 }
 # create EIP
 resource "aws_eip" "lb" {
-
+  domain = "vpc"
 }
 
 # create nat-gw
@@ -64,7 +65,7 @@ resource "aws_route_table" "pvt-rt" {
   vpc_id = aws_vpc.dev.id
 
   route {
-    cidr_block     = "0.0.0.0/24"
+    cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.natgw.id
   }
 }
@@ -84,16 +85,9 @@ resource "aws_security_group" "dev" {
   }
   ingress {
     description = "TLS from VPC"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "TLS from VPC"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
