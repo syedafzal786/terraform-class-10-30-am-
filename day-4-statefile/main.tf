@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "mohammed" {
-    bucket = "state-mohammed-store"
-  
+  bucket = "state-mohammed-store"
+
 }
 
 # resource "aws_s3_bucket_acl" "example" {
@@ -13,4 +13,18 @@ resource "aws_s3_bucket_versioning" "versioning_example" {
   versioning_configuration {
     status = "Enabled"
   }
+}
+
+resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
+  name           = "terraform-state-lock-dynamo"
+  hash_key       = "LockId"
+  read_capacity  = 20
+  write_capacity = 20
+ 
+   attribute {
+    name = "LockId"
+    type = "S"
+  }
+  
+
 }
