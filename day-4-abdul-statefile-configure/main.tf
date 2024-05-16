@@ -1,10 +1,14 @@
+provider "aws" {
+  region = "ap-south-1"
+  
+}
 resource "aws_instance" "Name" {
-  ami           = "ami-013e83f579886baeb"
+  ami           = "ami-0cc9838aa7ab1dce7"
   instance_type = "t2.micro"
   key_name      = "syed2"
-  
+
   tags = {
-    Name = "myec2"
+    Name = "abc"
   }
 }
 
