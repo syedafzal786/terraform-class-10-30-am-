@@ -33,8 +33,8 @@ resource "aws_instance" "ayush" {
  
   # File provisioner to copy a file from local to the remote EC2 instance
   provisioner "file" {
-    source      = "file10"  # Replace with the path to your local file
-    destination = "/home/ec2-user/file10"  # Replace with the path on the remote instance
+    source      = "file20"  # Replace with the path to your local file
+    destination = "/home/ec2-user/file20"  # Replace with the path on the remote instance
   }
   # remote execution process g
   provisioner "remote-exec" {
