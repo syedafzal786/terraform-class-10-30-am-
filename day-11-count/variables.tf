@@ -14,7 +14,7 @@ variable "instance_type" {
 
 variable "sandboxes" {
   type    = list(string)
-  default = ["ec2"]
+  default = ["ec2","afzal","syed"]
 }
 
 variable "key_name" {
