@@ -1,6 +1,6 @@
 resource "aws_key_pair" "test" {
   key_name = "public"
-  public_key = file("~/syeda/.ssh/id_rsa.pub")
+  public_key = file("~/syeda/.ssh/id_rsa")
 }
 
 resource "aws_instance" "syed" {
