@@ -6,3 +6,4 @@ resource "aws_instance" "ayush" {
   tags = {
     Name = "ayush"
   }
+}
