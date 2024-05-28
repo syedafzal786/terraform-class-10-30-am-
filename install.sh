@@ -71,3 +71,11 @@ sudo service docker start
 #------------------sonar install by using docker---------------
 docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
 docker run -d --name tomcat -p 8089:8080 tomcat:lts-community
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io-2023.key
+sudo yum upgrade
+# Add required dependencies for the jenkins package
+sudo yum install fontconfig java-17-openjdk
+sudo yum install jenkins
