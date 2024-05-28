@@ -5,13 +5,15 @@ sudo yum update -y
 
 sudo yum install git -y
 
+#-----------java dependency for jenkins-----------
+
+sudo dnf install java-17-amazon-corretto -y
+
 #------------jenkins install-------------
 sudo wget -O /etc/yum.repos.d/jenkins.repo \
     https://pkg.jenkins.io/redhat/jenkins.repo
 sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io-2023.key
 sudo yum upgrade
-# Add required dependencies for the jenkins package
-sudo yum install fontconfig java-17-openjdk
 sudo yum install jenkins -y
 sudo systemctl enable jenkins
 sudo systemctl start jenkins
